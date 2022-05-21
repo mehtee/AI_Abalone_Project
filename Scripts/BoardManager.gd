@@ -82,7 +82,7 @@ func get_stats(board, cell_number, piece, cluster_length, cluster_direction):
 			"piece has space" : piece_has_space, "opponent has space" : opponent_has_space, 
 			"is sandwich" : is_sandwich}
 	
-	
+
 func get_number_of_marbles(board, piece):
 	# Finding the number of marbles of the given piece type in the board
 	var count = 0;
@@ -90,6 +90,14 @@ func get_number_of_marbles(board, piece):
 		if board[cell_number] == piece:	
 			count += 1;
 	return count;
+
+
+func is_game_over(board):
+	# Return the winner if game is over
+	if get_number_of_marbles(board, BoardManager.BLACK) <= 8:
+		return BoardManager.WHITE
+	elif get_number_of_marbles(board, BoardManager.WHITE) <= 8:
+		return BoardManager.BLACK
 	
 	
 func test_board():
