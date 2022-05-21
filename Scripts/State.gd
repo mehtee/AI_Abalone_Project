@@ -13,6 +13,7 @@ func _init(board, black_score, white_score):
 	for cell in board:
 		self.board.append(cell)
 
+	
 func increase_score(piece):
 	if piece == BoardManager.BLACK:
 		self.black_score += 1

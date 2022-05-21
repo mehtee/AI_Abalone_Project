@@ -30,6 +30,7 @@ func init_board():
 		for neighbor in adjacency_lists[str(cell_number)]:
 			neighbors[cell_number].append(int(neighbor))
 		
+		
 func check_cluster(board, cell_number, piece, cluster_length, cluster_direction):
 	if board[cell_number] != piece:
 		return false
@@ -80,6 +81,16 @@ func get_stats(board, cell_number, piece, cluster_length, cluster_direction):
 	return {"number of side pieces" : num_side_pieces, "number of opponent pieces" : num_opponent_pieces, \
 			"piece has space" : piece_has_space, "opponent has space" : opponent_has_space, 
 			"is sandwich" : is_sandwich}
+	
+	
+func get_number_of_marbles(board, piece):
+	# Finding the number of marbles of the given piece type in the board
+	var count = 0;
+	for cell_number in range(len(board)):
+		if board[cell_number] == piece:	
+			count += 1;
+	return count;
+	
 	
 func test_board():
 	for i in range(61):
