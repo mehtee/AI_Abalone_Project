@@ -98,6 +98,7 @@ func is_game_over(board):
 		return BoardManager.WHITE
 	elif get_number_of_marbles(board, BoardManager.WHITE) <= 8:
 		return BoardManager.BLACK
+	return null;
 	
 	
 func test_board():

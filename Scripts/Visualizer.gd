@@ -9,10 +9,12 @@ var black_piece = preload("res://Scenes/Black Piece.tscn")
 func _ready():
 	var board = BoardManager.current_board;
 	var state = State.new(board, 0, 0)
-	# testing get_number_of_marbles
-	print(BoardManager.get_number_of_marbles(state.board, BoardManager.BLACK))
 	draw_complete_board(state.board)
-	
+	# minimax
+	var new_state = MiniMax.minimax(state, 0, true)[0];
+	update_board(new_state.board)
+
+
 func update_board(new_board):
 	for child in pieces.get_children():
 		child.queue_free()

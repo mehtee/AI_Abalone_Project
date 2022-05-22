@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "MiniMax",
+"language": "GDScript",
+"path": "res://Scripts/MiniMax.gd"
+}, {
 "base": "Reference",
 "class": "Move",
 "language": "GDScript",
@@ -25,6 +30,7 @@ _global_script_classes=[ {
 "path": "res://Scripts/Successor.gd"
 } ]
 _global_script_class_icons={
+"MiniMax": "",
 "Move": "",
 "State": "",
 "Successor": ""
