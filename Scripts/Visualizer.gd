@@ -4,16 +4,79 @@ export var pieces_path : NodePath
 onready var pieces = get_node(pieces_path)
 var white_piece = preload("res://Scenes/White Piece.tscn")
 var black_piece = preload("res://Scenes/Black Piece.tscn")
-
+var all_states = [];
+var index;
 
 func _ready():
 	var board = BoardManager.current_board;
+	print(BoardManager.kthrings.size())
 	var state = State.new(board, 0, 0)
 	draw_complete_board(state.board)
 	# minimax
-	var new_state = MiniMax.minimax(state, 0, true)[0];
+	var time_now = OS.get_unix_time();
+	
+	
+	var maxi = true;
+	var new_state = state;
+	all_states.append(new_state);
+	var count = 0;
+	var black = 14;
+	var white = 14;
+	
+	var mm = MiniMax.new()
+	while not BoardManager.terminal(new_state.board):
+		new_state = MiniMax.forward_pruning_alpha_beta(new_state, 3, maxi, -INF, INF)[0];
+		print(new_state)
+		count += 1;
+		print("count: ", count)
+		black = BoardManager.get_number_of_marbles(new_state.board, BoardManager.BLACK);
+		print("black: ", black)
+		white = BoardManager.get_number_of_marbles(new_state.board, BoardManager.WHITE);
+		print("white: ", white)
+		print("------")
+		maxi = not maxi;
+		all_states.append(new_state);
+		
+	index = all_states.size() - 1
+	var time_after = OS.get_unix_time();
+	var time_elapsed = time_after - time_now;
+	print("time: ", time_elapsed)
 	update_board(new_state.board)
+	
 
+
+func _input(event):
+	if event is InputEventKey and event.pressed:
+		var m = event.as_text().replace("Kp ", "")
+		
+		if m == "Right":
+			print("History, Towards forward:", index)
+			if index < all_states.size() - 1:
+				index = index + 1
+				update_board(all_states[index].board)
+			elif index == all_states.size() - 1:
+				index = 0
+				update_board(all_states[index].board)
+				
+		elif m == "Left":
+			print("History, Towards backward:")
+			if index - 1 >= 0:
+				index = index - 1
+				update_board(all_states[index].board)
+			elif index == 0:
+				index = all_states.size() - 1
+				update_board(all_states[index].board)
+				
+		elif m == "S":
+			print("History, Start of the game:")
+			index = 0;
+			update_board(all_states[index].board)
+		elif m == "E":
+			print("History: End of the game")
+			index = all_states.size() - 1;
+			update_board(all_states[index].board)
+		
+		print("index: ", index)
 
 func update_board(new_board):
 	for child in pieces.get_children():
