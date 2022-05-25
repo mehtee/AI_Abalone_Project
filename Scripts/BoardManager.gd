@@ -2,9 +2,14 @@ extends Node
 
 var current_board = []
 var neighbors = {}
+var kthrings = {}
 enum {EMPTY, BLACK, WHITE} # used to represent the board
 enum {L, UL, UR, R, DR, DL} # used to represent the directions of neighbors
+var hashes = {}
+var arr_hashes = []
+var rng = RandomNumberGenerator.new()
 
+	
 func _ready():
 	init_board()
 	# test_board()
@@ -29,8 +34,89 @@ func init_board():
 		neighbors[cell_number] = []
 		for neighbor in adjacency_lists[str(cell_number)]:
 			neighbors[cell_number].append(int(neighbor))
+	
+	### 4th ring
+	var forth_ring = []
+	# top
+	for cell_number in range(0, 5):
+		forth_ring.append(cell_number)
+	# bottom
+	for cell_number in range(56, 61):
+		forth_ring.append(cell_number)
+	# right top
+	forth_ring += [10, 17, 25, 34]
+	# right bottom
+	forth_ring += [42, 49, 55]
+	# left top
+	forth_ring += [5, 11, 18, 26]
+	# left bottom
+	forth_ring += [35, 43, 50]
+	
+	for cell in forth_ring:
+		kthrings[cell] = 4;
+	
+	### 3nd ring
+	var third_ring = []
+	# top
+	for cell_number in range(6, 10):
+		third_ring.append(cell_number)
+	# bottom
+	for cell_number in range(51, 55):
+		third_ring.append(cell_number)
+	# right top
+	third_ring += [16, 24, 33]
+	# right bottom
+	third_ring += [41, 48]
+	# left top
+	third_ring += [12, 19, 27]
+	# left bottom
+	third_ring += [36, 44]
+	
+	for cell in third_ring:
+		kthrings[cell] = 3;
+	
+	### 2nd ring
+	var second_ring = []
+	# top
+	for cell_number in range(13, 16):
+		second_ring.append(cell_number)
+	# bottom
+	for cell_number in range(45, 48):
+		second_ring.append(cell_number)
+	# right top
+	second_ring += [23, 32]
+	# right bottom
+	second_ring += [40]
+	# left top
+	second_ring += [20, 28]
+	# left bottom
+	second_ring += [37]
+	
+	for cell in second_ring:
+		kthrings[cell] = 2;
+	
+	### 1st ring
+	var first_ring = [21, 22, 31, 39, 38, 29]
+	for cell in first_ring:
+		kthrings[cell] = 1;
+	
+	kthrings[30] = 0;
+	
+	
+
+	# Generating each cell's hash of each player in arr_hashes:
+	# For Player 1 and 2:
+	
+	
+	for cell_number in range(61):
+		var player1 = int(str(rng.randi_range(100,999)) + str(cell_number) + str(1))
+		var player2 = int(str(rng.randi_range(100,999)) + str(cell_number) + str(2))
+
+
+		hashes[cell_number] = [player1, player2]
 		
-		
+	print(hashes)
+	
 func check_cluster(board, cell_number, piece, cluster_length, cluster_direction):
 	if board[cell_number] != piece:
 		return false
@@ -91,6 +177,16 @@ func get_number_of_marbles(board, piece):
 			count += 1;
 	return count;
 
+
+func terminal(board):
+	# Return the winner if game is over
+	if get_number_of_marbles(board, BoardManager.BLACK) <= 8:
+		return true;
+	elif get_number_of_marbles(board, BoardManager.WHITE) <= 8:
+		return true;
+	else:
+		return false;
+	
 
 func is_game_over(board):
 	# Return the winner if game is over

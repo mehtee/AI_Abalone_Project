@@ -19,6 +19,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Move.gd"
 }, {
+"base": "Node",
+"class": "PQ",
+"language": "GDScript",
+"path": "res://Scripts/PQ.gd"
+}, {
+"base": "Reference",
+"class": "PQState",
+"language": "GDScript",
+"path": "res://Scripts/PQState.gd"
+}, {
 "base": "Reference",
 "class": "State",
 "language": "GDScript",
@@ -28,12 +38,20 @@ _global_script_classes=[ {
 "class": "Successor",
 "language": "GDScript",
 "path": "res://Scripts/Successor.gd"
+}, {
+"base": "Reference",
+"class": "tt",
+"language": "GDScript",
+"path": "res://Scripts/tt.gd"
 } ]
 _global_script_class_icons={
 "MiniMax": "",
 "Move": "",
+"PQ": "",
+"PQState": "",
 "State": "",
-"Successor": ""
+"Successor": "",
+"tt": ""
 }
 
 [application]
